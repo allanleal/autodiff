@@ -1424,10 +1424,10 @@ constexpr void apply(Dual<T, G>& self)
     apply(self, Op{});
 }
 
-template<typename T, typename G>
-std::ostream& operator<<(std::ostream& out, const Dual<T, G>& x)
+template<typename R, enableif<isExpr<R>>...>
+std::ostream& operator<<(std::ostream& out, R&& r)
 {
-    out << x.val;
+    out << val(r);
     return out;
 }
 
