@@ -71,7 +71,8 @@ jobs:
           source activate autodiff
           ccache -s
           ccache -z
-          cmake -GNinja -S . -B .build -DCMAKE_BUILD_TYPE=${{ matrix.config }} -DAUTODIFF_TEST_SANITIZE=ON
+          mkdir -p .build && cd .build
+          cmake -GNinja .. -DCMAKE_BUILD_TYPE=${{ matrix.config }} -DAUTODIFF_TEST_SANITIZE=ON
           ninja
           ninja test
           ninja install
