@@ -49,6 +49,14 @@ jobs:
           python-version: ${{ matrix.python-version }}
           miniforge-version: latest
 
+      - shell: bash -el {0}
+        run: |
+          conda info
+          conda list
+          conda config --show-sources
+          conda config --show
+          printenv | sort
+
       - name: Configuring Conda Environment
         shell: bash -el {0}
         env:
@@ -60,7 +68,7 @@ jobs:
       - name: Build
         shell: bash -el {0}
         run: |
-          conda activate autodiff
+          source activate autodiff
           ccache -s
           ccache -z
           cmake -S . -B .build -DCMAKE_BUILD_TYPE=${{ matrix.config }} -DAUTODIFF_TEST_SANITIZE=ON
@@ -69,11 +77,11 @@ jobs:
       - name: Install
         shell: bash -el {0}
         run: |
-          conda activate autodiff
+          source activate autodiff
           cmake --build .build --target install
       - name: Test
         shell: bash -el {0}
         run: |
-          conda activate autodiff
+          source activate autodiff
           cmake -S . -B .build -DCMAKE_BUILD_TYPE=Debug
           cmake --build .build --target tests --parallel 3
