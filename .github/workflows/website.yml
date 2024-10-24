@@ -30,6 +30,16 @@ jobs:
           mamba install conda-devenv
           conda devenv -e mamba
 
+      - name: Checking Miniconda Environment
+        shell: bash -el {0}
+        run: |
+          source activate autodiff
+          conda info
+          conda list
+          conda config --show-sources
+          conda config --show
+          printenv | sort
+
       - name: Build Website
         shell: bash -l {0}
         run: |
