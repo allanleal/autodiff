@@ -74,6 +74,6 @@ jobs:
           mkdir -p .build && cd .build
           cmake -GNinja .. -DCMAKE_BUILD_TYPE=${{ matrix.config }} -DAUTODIFF_TEST_SANITIZE=ON
           ninja
-          ninja test
+          ninja tests
           ninja install
           ccache -s
