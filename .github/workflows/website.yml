@@ -5,6 +5,8 @@ on:
     branches:
       - main
 
+  pull_request:  # remove this before merging into autodiff/autodiff
+
   schedule:
     - cron: "0 5 * * 1"  # runs at 05:00 UTC on Mondays
 
@@ -17,10 +19,10 @@ jobs:
         with:
           submodules: recursive
 
-      - uses: conda-incubator/setup-miniconda@v3
+      - name: Configuring Miniconda
+        uses: conda-incubator/setup-miniconda@v3
         with:
-          auto-update-conda: true
-
+          miniforge-version: latest
 
       - name: Configuring Conda Environment
         shell: bash -el {0}
