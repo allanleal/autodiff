@@ -5,6 +5,8 @@ on:
     branches:
       - main
 
+  pull_request:  # remove this before merging into autodiff/autodiff
+
   schedule:
     - cron: "0 5 * * 1"  # runs at 05:00 UTC on Mondays
 
@@ -13,21 +15,31 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
         with:
           submodules: recursive
 
-      - uses: conda-incubator/setup-miniconda@v2
+      - name: Configuring Miniconda
+        uses: conda-incubator/setup-miniconda@v3
         with:
-          auto-update-conda: true
+          miniforge-version: latest
 
-      - name: Conda Environment
-        shell: bash -l {0}
+      - name: Configuring Conda Environment
+        shell: bash -el {0}
         run: |
-          conda config --set always_yes yes --set changeps1 no
-          conda config --add channels conda-forge
-          conda install conda-devenv
-          conda devenv
+          mamba install conda-devenv
+          conda devenv -e mamba
+
+      - name: Checking Miniconda Environment
+        shell: bash -el {0}
+        run: |
+          source activate autodiff
+          conda info
+          conda list
+          conda config --show-sources
+          conda config --show
+          printenv | sort
+
       - name: Build Website
         shell: bash -l {0}
         run: |
